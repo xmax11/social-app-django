@@ -3,35 +3,14 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - main   # runs only when you push to main
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Copy code to EC2
-        uses: appleboy/scp-action@v0.1.6
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          source: "."
-          target: "/home/ec2-user/social_django_app"
-
-      - name: Deploy on EC2
-        uses: appleboy/ssh-action@v0.1.8
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            cd /home/ec2-user/social_django_app
-            python -m pip install --upgrade pip
-            pip install -r requirements.txt
-            python manage.py migrate
-            sudo systemctl restart social_django.service
-            echo "✅ Deployment completed successfully!"
+        run: echo "scp your files here"
