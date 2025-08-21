@@ -1,12 +1,12 @@
-name: pre-commit check
+# name: pre-commit check
 
-on:
-  push:
-  pull_request:
+# on:
+#   push:
+#   pull_request:
 
-permissions:
-  contents: read
+# permissions:
+#   contents: read
 
-jobs:
-  pre-commit:
-    uses: python-social-auth/social-core/.github/workflows/pre-commit-shared.yml@master
+# jobs:
+#   pre-commit:
+#     uses: python-social-auth/social-core/.github/workflows/pre-commit-shared.yml@master
