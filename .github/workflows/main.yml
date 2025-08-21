@@ -1,0 +1,105 @@
+name: Deploy to AWS EC2
+
+# Trigger on push to main branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 4. Copy code to EC2
+      - name: Copy code to EC2
+        uses: appleboy/scp-action@v0.1.6
+        with:
+          host: ${{ 54.92.136.15 }}
+          username: ${{ shell-admin }}
+          key: ${{ -----BEGIN RSA PRIVATE KEY-----
+MIIEpQIBAAKCAQEA67HP7cJTRRZbkEp7jidwX3A9Rj76NFV++1CyGHpQVBvWVQpf
+mSX+ckMhFDQxSEkrkNP2h9oXFKXJQzzgQseeuCkfnSNaWsa7t3YiCV5EhZYGGk9O
+Fwv6bhAaTyCt5ySukAUX4ENhl8dRkhuEPZvQCvc+sTbmNZ17Drcamj0LTn6sxrYH
+yulFuC83yxoZiWE5jWJSiXh2UrHjq9DsfSE3avegdKSQHFNiF80mp/1EmP5lOzjS
+TL+AzvkuQ9TGn9Xrf8bebf7mMjQTrtNi/wGs7Eyho4kmB6BnxzN00E1kaParEDe5
+L3tX+kPPiQb33uJ6jc7DrvmZpWjLqIpYJtagOwIDAQABAoIBAGmCjgxng5NX8OFl
+Fm6KpTl0K1n481TeORwUAcYHa1Jbq9Uh8a3DXmaUOoiq3Kz5ZHFPEfu62744gSKC
+a/o5Fopmjmpv2xDsCjiUv6Pl+VK72DuK6PBUQmVm/AAUJwVkXGjIfum8AEJLze5U
+NxzFVZqzF/OJGgFCYEY0HcqSLS+TlZ0C7LC9So7qsZYZz5sm1dwSbbAGfjcsEMq+
+2FBsutiOlQNNP5GphROp9cepGOuKDhUD3T7tuGFXCFaDqi76rGtyI74hFpfHpWqE
+NKNaNDdLO76J6/aQqSTerdkHiVgkXewVPB5A650qb+40df6MNtkMaGoa5NWEm2l7
+cyPJLaECgYEA+YW5p7cORHQETKcwVYRxjLjaJPUXTXxL2gWJGHxoM6lzerVUTFje
+LcJSqu7Dki6pRNYuXTo3Cj0KmTPAQP5AGJ7n1lsewoVa0SICuVqklPiIDKGADYOe
+dhX10XrHv53atBipdyrDQx2vbaKnc1uJtsLqM2tt+L1yEeAvjTrA96MCgYEA8dAw
+u7PIne3SpKDSGolopFc5yWuBg1PtPKLzUUKy4MV3HV8ZgsqWCs5JulgC6Sfv/zEs
+tn3+HI/gtf+Npg0Ltzdf7/hyQbg1KwGWkrba7LGUATX+C17HDAOCjH4D+Uwz1pKW
+TSg5b2aR/9mqMSeVYU0bYlx4+1rjd+JMRHIPHokCgYEAqURn/zgU+6bgS8eW6Exi
+Yx37DdsdpbjOE+ZxbCTo4zLuXa2os+oNPml2fvJdxUrWFRZeeWvGbrGeAPO0VeKk
+RI93olhJ85dXVkuGIYs13sECOd9M6N4CnwSiryplWr2Q4V9hhq+BqoP2v575jS3p
+rAtpqNwVzAln2myElX/n65UCgYEAtOdAnhwI+QWDsb/SjyG/VDshMyunT52I/PUX
+PPK+KePwkduklTGEAH+Frs/LFazYIj0iq0AkzC9jOCUATnqyChZ2QmvG5p2twQfG
+IuqDa9IJ3MIM1WrJVJaHox1fUbENkvhFU2HFXi8JCLRJW862NX3e/74YkErVo8l7
+rzT5VKkCgYEA2qOwE+W1lGgl8lCmAk3Yrxyxgu5VL+ikpj8GqFvGcQusALxu/gdO
+tBfdZRCqID9+k48xYLGYJahbD7xMe4sZinLvbEdYSKKSv3/6NlXkgpKNui4E+wFJ
+WF99wk5WD/t1hoYzQIWvtGvI2/6WMSzqh/5yTBDJF4rWIZed2jVADe0=
+-----END RSA PRIVATE KEY----- }}
+          source: "."
+          target: "/home/ec2-user/social_django_app"
+
+      # 5. Run commands on EC2
+      - name: Deploy on EC2
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ 54.92.136.15 }}
+          username: ${{ shell-admin }}
+          key: ${{ -----BEGIN RSA PRIVATE KEY-----
+MIIEpQIBAAKCAQEA67HP7cJTRRZbkEp7jidwX3A9Rj76NFV++1CyGHpQVBvWVQpf
+mSX+ckMhFDQxSEkrkNP2h9oXFKXJQzzgQseeuCkfnSNaWsa7t3YiCV5EhZYGGk9O
+Fwv6bhAaTyCt5ySukAUX4ENhl8dRkhuEPZvQCvc+sTbmNZ17Drcamj0LTn6sxrYH
+yulFuC83yxoZiWE5jWJSiXh2UrHjq9DsfSE3avegdKSQHFNiF80mp/1EmP5lOzjS
+TL+AzvkuQ9TGn9Xrf8bebf7mMjQTrtNi/wGs7Eyho4kmB6BnxzN00E1kaParEDe5
+L3tX+kPPiQb33uJ6jc7DrvmZpWjLqIpYJtagOwIDAQABAoIBAGmCjgxng5NX8OFl
+Fm6KpTl0K1n481TeORwUAcYHa1Jbq9Uh8a3DXmaUOoiq3Kz5ZHFPEfu62744gSKC
+a/o5Fopmjmpv2xDsCjiUv6Pl+VK72DuK6PBUQmVm/AAUJwVkXGjIfum8AEJLze5U
+NxzFVZqzF/OJGgFCYEY0HcqSLS+TlZ0C7LC9So7qsZYZz5sm1dwSbbAGfjcsEMq+
+2FBsutiOlQNNP5GphROp9cepGOuKDhUD3T7tuGFXCFaDqi76rGtyI74hFpfHpWqE
+NKNaNDdLO76J6/aQqSTerdkHiVgkXewVPB5A650qb+40df6MNtkMaGoa5NWEm2l7
+cyPJLaECgYEA+YW5p7cORHQETKcwVYRxjLjaJPUXTXxL2gWJGHxoM6lzerVUTFje
+LcJSqu7Dki6pRNYuXTo3Cj0KmTPAQP5AGJ7n1lsewoVa0SICuVqklPiIDKGADYOe
+dhX10XrHv53atBipdyrDQx2vbaKnc1uJtsLqM2tt+L1yEeAvjTrA96MCgYEA8dAw
+u7PIne3SpKDSGolopFc5yWuBg1PtPKLzUUKy4MV3HV8ZgsqWCs5JulgC6Sfv/zEs
+tn3+HI/gtf+Npg0Ltzdf7/hyQbg1KwGWkrba7LGUATX+C17HDAOCjH4D+Uwz1pKW
+TSg5b2aR/9mqMSeVYU0bYlx4+1rjd+JMRHIPHokCgYEAqURn/zgU+6bgS8eW6Exi
+Yx37DdsdpbjOE+ZxbCTo4zLuXa2os+oNPml2fvJdxUrWFRZeeWvGbrGeAPO0VeKk
+RI93olhJ85dXVkuGIYs13sECOd9M6N4CnwSiryplWr2Q4V9hhq+BqoP2v575jS3p
+rAtpqNwVzAln2myElX/n65UCgYEAtOdAnhwI+QWDsb/SjyG/VDshMyunT52I/PUX
+PPK+KePwkduklTGEAH+Frs/LFazYIj0iq0AkzC9jOCUATnqyChZ2QmvG5p2twQfG
+IuqDa9IJ3MIM1WrJVJaHox1fUbENkvhFU2HFXi8JCLRJW862NX3e/74YkErVo8l7
+rzT5VKkCgYEA2qOwE+W1lGgl8lCmAk3Yrxyxgu5VL+ikpj8GqFvGcQusALxu/gdO
+tBfdZRCqID9+k48xYLGYJahbD7xMe4sZinLvbEdYSKKSv3/6NlXkgpKNui4E+wFJ
+WF99wk5WD/t1hoYzQIWvtGvI2/6WMSzqh/5yTBDJF4rWIZed2jVADe0=
+-----END RSA PRIVATE KEY----- }}
+          script: |
+            cd /home/ec2-user/social_django_app
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt
+            python manage.py migrate
+            sudo systemctl restart social_django.service
+            echo "Deployment completed successfully!"
